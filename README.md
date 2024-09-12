@@ -14,7 +14,7 @@ $ pkg install nodejs -y
 $ pkg install ffmpeg -y
 $ pkg install imagemagick -y
 $ npm install pm2 -g
-$ git clone https://github.com/rizkanugrha/violet-rzk
+$ git clone https://github.com/rizkanugrha/violet-rzk.git
 $ cd violet-rzk
 $ npm install --force
 $ pm2 start index.js --name violet-rzk
