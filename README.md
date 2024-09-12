@@ -33,6 +33,8 @@ $ pm2 restart violet-rzk
 * SET COOKIE IG ON COMMANDS IGH & INSTA
 * REGISTER MONGO DB [MONGO DB](https://www.mongodb.com/cloud/atlas/register
 * SET MONGO URL [this line](https://github.com/rizkanugrha/violet-rzk/blob/main/src/database/database.js#L17)
+* GET COOKIE YOUTUBE [ytdl-core](https://github.com/distubejs/ytdl-core)
+* SET COOKIE [this file](https://github.com/rizkanugrha/violet-rzk/blob/main/src/lib/scrape/cookies.json)
 ## Acknowledgements
 
 -   Author : [Rizka Nugraha](https://github.com/rizkanugrha) for creating and maintaining this project.
