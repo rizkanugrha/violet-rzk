@@ -1,0 +1,29 @@
+
+
+export const name = 'ava'
+export const aliases = ['ava', 'getava']
+export const category = 'Groups'
+export const admin = true
+export const botAdmin = true
+export const group = true
+
+export async function execute(m, client, { body, prefix, args, arg, cmd, url, flags, msg, command }) {
+    try {
+        if (m.quoted) {
+            let ce = m.quoted.sender
+            const img = await client.profilePictureUrl(m.quoted.sender, 'image');
+            await client.sendMessage(m.chat, { image: { url: img }, caption: `${ce?.notify || 'unknown'}` })
+        } else if (m.mentionedJid.length) {
+            const img = await client.profilePictureUrl(m.mentionedJid[0], 'image');
+            await client.sendMessage(m.chat, { image: { url: img } })
+        } else if (arg.match(/([0-9]{5,16}|0)/g)) {
+            const img = await client.profilePictureUrl(parseMention(arg)[0], 'image');
+            await client.sendMessage(m.chat, { image: { url: img } })
+        } else {
+            m.reply(`reply message, @tag, user, or phone number, e.g : ${prefix + cmd} 62852366`)
+        }
+    } catch (error) {
+        console.log(error);
+        m.reply('dia pemalu')
+    }
+}

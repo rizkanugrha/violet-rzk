@@ -1,0 +1,36 @@
+
+
+import { getContentType } from '@whiskeysockets/baileys'
+import moment from 'moment-timezone'
+import util from 'util'
+export const name = 'deleted'
+export const aliases = ['deleted', 'deleted']
+export const category = 'Tools'
+export const group = true
+export const botAdmin = true
+
+export function execute(m, client, { body, prefix, args, arg, cmd, url, flags, msg, command, isGroupMsg }) {
+    let terhapus = store.messages[m.chat]
+    let filtered = []
+
+    terhapus.array
+        .filter(x => x.hasOwnProperty('message') && x.message.protocolMessage)
+        .map(x => filtered.push(terhapus.get(x.message.protocolMessage.key.id)))
+
+    console.log(filtered);
+    if (filtered.length == 0) return m.reply('tidak ada history di database')
+
+    // let title = isGroupMsg ? `di ${formattedTitle}` : `${filtered.length > 0 && filtered.slice(-1)[0]?.hasOwnProperty('pushName') ? filtered.slice(-1)[0].pushName : m.chat}`
+
+    // var temp = `pesan yang di hapus: *${title}* | ${filtered.length} pesan\n\n`
+    // var index = 1
+
+    // filtered.forEach(({ message, messageTimestamp, key }) => {
+    //     temp += `*${index++}*. @${key.participant.replace('@s.whatsapp.net', '')} | ${moment(messageTimestamp * 1000).format('DD-MM HH:mm:ss')} | ${getContentType(message)}\n`
+    // })
+    // // m.reply(temp, m.chat, {
+    // //     mentions: filtered.map(({ key }) => key.participant)
+    // // })
+    // client.sendMessage(m.chat, { text: temp }, { mentions: filtered.map(({ key }) => key.participant) })
+
+}

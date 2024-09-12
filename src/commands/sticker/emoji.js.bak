@@ -1,0 +1,27 @@
+
+
+import { cropStyle, Sticker } from "../../lib/utils/sticker.js"
+import config from '../../src/data/setting.js'
+// const emojiRegex = require('emoji-regex')()
+import emojiRegex from "emoji-regex"
+export const name = 'emoji'
+export const aliases = ['emoji', 'emo']
+export const category = 'ngetes'
+
+export async function execute(m, client, { body, prefix, args, arg, cmd, url, flags, msg, command }) {
+    try {
+        let vendor = ['apple', 'google', 'samsung', 'microsoft', 'whatsapp', 'twitter', 'facebook', 'skype', 'joypixels', 'openmoji', 'emojidex', 'messenger', 'lg', 'htc', 'mozilla']
+
+        if ([...body.matchAll(emojiRegex)].length > 1) return m.reply('hanya bisa mengkonversi 1 emoji saja')
+        const res = await Sticker.emoji(args[0], flags[0])
+        if (res == undefined) return m.reply(`emoji tidak tersedia\n\ncontoh style : ${prefix + cmd} --style\nlist style:\n\n--${vendor.join('\n--')}`)
+        const data = new Sticker(res.url.replace('/thumbs/120/', '/thumbs/320/'), { packname: `${config.name} #${stats.sticker}`, author: config.author })
+        await client.sendMessage(m.chat, await data.toMessage(), { quoted: m })
+        statistics('sticker')
+    } catch (error) {
+        m.reply('emoji not supported, try another one.\n\nDo Note! that not all emojis are supported')
+        console.log(error);
+    }
+}
+
+

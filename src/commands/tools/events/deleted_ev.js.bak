@@ -1,0 +1,23 @@
+import moment from "moment-timezone"
+
+export const group = true
+export const botAdmin = true
+
+const tanda = '```'
+// ebenr urung;v 
+// sengojo crud ne tak gawe kokui tak genti sintak e mongose tok
+export async function execute(m, client, { body, prefix, cmd }) {
+    if ((m.quoted) && (/^pesan yang di hapus/i.test(m.quoted.text))) {
+        if (!m.quoted) return
+        if (!/^pesan yang di hapus/i.test(m.quoted.text)) return
+
+        let terhapus = store.messages[m.chat]
+        let filtered = []
+        terhapus.array.filter(x => x.hasOwnProperty('message')).filter(x => x.message.protocolMessage).map(x => filtered.push(terhapus.get(x.message.protocolMessage.key.id)))
+
+        if (m.text - 1 > filtered.length - 1) return
+        var result = filtered[m.text - 1]
+
+        client.copyNForward(m.chat, result, true)
+    }
+}
