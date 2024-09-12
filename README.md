@@ -31,7 +31,7 @@ $ pm2 restart violet-rzk
 ## Set UP
 * GET COOKIE IG [insta-fetcher](https://github.com/Gimenz/insta-fetcher)
 * SET COOKIE IG ON COMMANDS IGH & INSTA
-* REGISTER MONGO DB [MONGO DB](https://www.mongodb.com/cloud/atlas/register
+* REGISTER MONGO DB [MONGO DB](https://www.mongodb.com/cloud/atlas/register)
 * SET MONGO URL [this line](https://github.com/rizkanugrha/violet-rzk/blob/main/src/database/database.js#L17)
 * GET COOKIE YOUTUBE [ytdl-core](https://github.com/distubejs/ytdl-core)
 * SET COOKIE [this file](https://github.com/rizkanugrha/violet-rzk/blob/main/src/lib/scrape/cookies.json)
