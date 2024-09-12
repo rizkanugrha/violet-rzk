@@ -203,19 +203,13 @@ const startBot = async () => {
 
         for (let groupId of groupIds) {
             try {
-                if (parseFloat(data[0].magnitude) > 5.0) {
-                    format += `- *Waktu Terjadi:* ${data[0].date} ${data[0].time}\n- *Lintang - Bujur:* ${data[0].lintang} - ${data[0].bujur}\n- *Magnitude:* ${data[0].magnitude}\n- *Kedalaman:* ${data[0].kedalaman} \n- *Wilayah:* ${data[0].wilayah}\n- *Link Sumber :* https://inatews.bmkg.go.id/web/detail?name=${data[0].id}&day=578\n\nHati-hati terhadap gempabumi susulan yang mungkin terjadi\n\n> >Data by BMKG`;
-                    await sleep(3000);
-                    client.sendMessage(
-                        groupId, { text: `${format}` }
-                    );
-                } else {
-                    format += `- *Waktu Terjadi:* ${data[0].date} ${data[0].time}\n- *Lintang - Bujur:* ${data[0].lintang} - ${data[0].bujur}\n- *Magnitude:* ${data[0].magnitude}\n- *Kedalaman:* ${data[0].kedalaman} \n- *Wilayah:* ${data[0].wilayah}\n- *Link Sumber :* https://inatews.bmkg.go.id/web/detail?name=${data[0].id}&day=476\n\nHati-hati terhadap gempabumi susulan yang mungkin terjadi\n\n> >Data by BMKG`;
-                    await sleep(3000);
-                    client.sendMessage(
-                        groupId, { text: `${format}` }
-                    );
-                }
+
+                format += `- *Waktu Terjadi:* ${data[0].date} ${data[0].time}\n- *Lintang - Bujur:* ${data[0].lintang} - ${data[0].bujur}\n- *Magnitude:* ${data[0].magnitude}\n- *Kedalaman:* ${data[0].kedalaman} \n- *Wilayah:* ${data[0].wilayah}\n- *Link Sumber :* https://inatews.bmkg.go.id/web/detail?name=${data[0].id}&day=476\n\nHati-hati terhadap gempabumi susulan yang mungkin terjadi\n\n> >Data by BMKG`;
+                await sleep(3000);
+                client.sendMessage(
+                    groupId, { text: `${format}` }
+                );
+
 
                 // await client.sendMessage(groupId, { image: { url: imageBuffer }, caption: format, mimetype: 'image/jpeg' })
             } catch (error) {
