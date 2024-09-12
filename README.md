@@ -25,6 +25,10 @@ $ pm2 restart violet-rzk
 * Download And Install FFmpeg [`Click Here`](https://ffmpeg.org/download.html) (**Don't Forget Add FFmpeg to PATH enviroment variables**)
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
 
+## SET UP
+* GET COOKIE IG [insta-fetcher](https://github.com/Gimenz/insta-fetcher)
+* REGISTER MONGO DB [MONGO DB](https://www.mongodb.com/cloud/atlas/register)
+
 ## Acknowledgements
 
 -   Author : [Rizka Nugraha](https://github.com/rizkanugrha) for creating and maintaining this project.
