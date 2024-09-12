@@ -6,9 +6,9 @@
     "type": "module",
     "scripts": {
         "start": "node index.js",
-        "pm2": "pm2 start index.js --name bot",
-        "restart:pm2": "pm2 restart bot",
-        "stop:pm2": "pm2 stop bot"
+        "pm2": "pm2 start index.js --name violet-rzk",
+        "restart:pm2": "pm2 restart violet-rzk",
+        "stop:pm2": "pm2 stop violet-rzk"
     },
     "keywords": [
         "bot",
