@@ -1,3 +1,14 @@
+/**
+ * Author  : Rizka Nugraha
+ * Name    : violet-rzk
+ * Version : 2.8.24
+ * Update  : 2 Agustus 2024
+ * 
+ * If you are a reliable programmer or the best developer, please don't change anything.
+ * If you want to be appreciated by others, then don't change anything in this script.
+ * Please respect me for making this tool from the beginning.
+ */
+
 import axios from 'axios';
 import events from 'node:events';
 import { writeFileSync, readFileSync } from 'node:fs';
