@@ -73,6 +73,3 @@ export async function loadCommands() {
 
     return commands.size;
 }
-
-// Call loadCommands to start loading commands and events
-loadCommands();
