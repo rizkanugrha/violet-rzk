@@ -50,7 +50,6 @@ if (process.env.WRITE_STORE === 'true') store.readFromFile(`./src/database/${pro
 const pathContacts = `./src/database/${process.env.SESSION_NAME}/contacts.json`;
 const pathMetadata = `./src/database/${process.env.SESSION_NAME}/groupMetadata.json`;
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-import { gempaEvent, startMonitoring } from './lib/scrape/gempa2.js';
 
 const startBot = async () => {
     await openDB()
@@ -196,61 +195,7 @@ const startBot = async () => {
         }
     });
 
-    gempaEvent.on('gempaterjadi', async (data) => {
-        var groupIds = ['120363297357822992@g.us', '120363298363876699@g.us', '120363275463567709@g.us']
-        const format = `*Terjadi Gempa Bumi* <\n\n`
-        client.sendMessage('6285314240519@s.whatsapp.net', { text: `Sending Broadcast gempa dirasa to ${groupIds.length} Group Chats, Estimated Completion Time ${groupIds.length * 3} seconds` });
-
-        for (let groupId of groupIds) {
-            try {
-
-                format += `- *Waktu Terjadi:* ${data[0].date} ${data[0].time}\n- *Lintang - Bujur:* ${data[0].lintang} - ${data[0].bujur}\n- *Magnitude:* ${data[0].magnitude}\n- *Kedalaman:* ${data[0].kedalaman} \n- *Wilayah:* ${data[0].wilayah}\n- *Link Sumber :* https://inatews.bmkg.go.id/web/detail?name=${data[0].id}&day=476\n\nHati-hati terhadap gempabumi susulan yang mungkin terjadi\n\n> >Data by BMKG`;
-                await sleep(3000);
-                client.sendMessage(
-                    groupId, { text: `${format}` }
-                );
-
-
-                // await client.sendMessage(groupId, { image: { url: imageBuffer }, caption: format, mimetype: 'image/jpeg' })
-            } catch (error) {
-                console.log(`Error sending broadcast to group ${groupIds}:`, error);
-                client.sendMessage('6285314240519@s.whatsapp.net', { text: `erroe send gempa drasa` })
-            }
-        }
-
-
-        client.sendMessage('6285314240519@s.whatsapp.net', { text: `Broadcast Successfully Sent gempa dirasa to ${groupIds.length} Groups` });
-        console.log('Gempa dirasa:', format); // or handle the data as needed
-    });
-
-    gempaEvent.on('realtime', async (data) => {
-        let groupIds = ['120363297357822992@g.us', '120363298363876699@g.us', '120363275463567709@g.us']
-
-        client.sendMessage('6285314240519@s.whatsapp.net', { text: `Sending Broadcast gempa realtime to ${groupIds.length} Group Chats, Estimated Completion Time ${groupIds.length * 3} seconds` });
-        const format = `*Terjadi Gempa Bumi* <\n\n- *Waktu Terjadi:* ${data[0].date} ${data[0].time}\n- *Lintang - Bujur:* ${data[0].lintang} LS - ${data[0].bujur} BT\n- *Magnitude:* ${data[0].magnitude}\n- *Kedalaman:* ${data[0].kedalaman} \n- *Wilayah:* ${data[0].wilayah}\n- *Link Sumber :* https://inatews.bmkg.go.id/web/detail2?name=${data[0].id}&day=326\n\nHati-hati terhadap gempabumi susulan yang mungkin terjadi\n\n> >Data by BMKG`;
-
-        for (let groupId of groupIds) {
-            try {
-                await sleep(3000);
-                client.sendMessage(
-                    groupId, { text: `${format}` }
-                );
-
-                //   await client.sendMessage(groupId, { image: { buffer: url }, caption: format, mimetype: 'image/jpeg' })
-            } catch (error) {
-                console.log(`Error sending broadcast to group ${groupId}:`, error);
-                client.sendMessage('6285314240519@s.whatsapp.net', { text: `erroe send gempa relytime` })
-
-            }
-        }
-
-        client.sendMessage('6285314240519@s.whatsapp.net', { text: `Broadcast Successfully Sent gempa realtime to ${groupIds.length} Groups` });
-        console.log('Gempa realtime:', format); // or handle the data as needed
-    });
-
-    startMonitoring()
-
-    //endgempa
+   
 
     // write session kang
     client.ev.on('creds.update', saveCreds);
