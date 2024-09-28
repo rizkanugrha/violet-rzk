@@ -44,8 +44,10 @@ export async function Messages(client, m) {
         const isGroupMsg = m.isGroup
         let groupMembers = m.groupMember
         let groupAdmins = m.groupAdmins
-        let isGroupAdmin = m.isOwner || m.isAdmin
+        let isGroupAdmin = m.isAdmin || m.isOwner
         let isBotGroupAdmin = m.isBotAdmin
+        //console.log(m.isBotAdmin);
+
         let formattedTitle = m.gcName
 
         const prefix = m.prefix
@@ -56,16 +58,12 @@ export async function Messages(client, m) {
         const cmd = isCmd ? body.slice(1).trim().split(/ +/).shift().toLowerCase() : null
         let url = m.url
 
-
-
-
         for (let i of args) {
             if (i.startsWith('--')) flags.push(i.slice(2).toLowerCase())
         }
 
         // senggel
         if (body == 'bot' || body == 'Bot' || body == 'p' || body == 'P') {
-            //m.reply(`pie senggel? @${client.pushname}`)
             client.sendMessage(m.from, {
                 text:
                     `Dalemm.. Aku on... Langsung saja ${m.prefix}menu @` +
@@ -76,9 +74,8 @@ export async function Messages(client, m) {
 
         //fix anu
         if (body == m.prefix) {
-            return console.log('ah')
+            return
         }
-        // write user & grup to db
 
         //jika cmd maka composing
         if (isCmd && config.composing) {
@@ -123,11 +120,21 @@ export async function Messages(client, m) {
         //commandss
         if (!isCmd) return
 
+        const command = commands.get(cmd) || Array.from(commands.values()).find(cmdObj => cmdObj.aliases && cmdObj.aliases.includes(cmd));
 
-        const command = commands.get(cmd) || Array.from(commands.values()).find(cmdObj => {
-            return cmdObj.aliases && cmdObj.aliases.includes(cmd);
-        });
         if (!command) return m.reply(`💔 *command not found!!*`)
+
+
+        if (command?.pconly && isGroupMsg)
+            return m.reply(`🟨 ${config.cmdMsg.pconly}`)
+        if (command?.group && !isGroupMsg)
+            return m.reply(`🟨 ${config.cmdMsg.groupMsg}`)
+        if (command?.admin && isGroupMsg && !isGroupAdmin)
+            return m.reply(`🟨 ${config.cmdMsg.notGroupAdmin}`)
+        if (command?.botAdmin && isGroupMsg && !isBotGroupAdmin)
+            return m.reply(`🟨 ${config.cmdMsg.botNotAdmin}`)
+        if (command?.owner && !isOwner)
+            return m.reply(`🟨 ${config.cmdMsg.owner}`)
 
         // Check if the command object has an execute function
         if (typeof command.execute !== "function") {
@@ -135,16 +142,6 @@ export async function Messages(client, m) {
         }
 
 
-        if (command.pconly && isGroupMsg)
-            return m.reply(`🟨 ${config.cmdMsg.pconly}`)
-        if (command.group && !isGroupMsg)
-            return m.reply(`🟨 ${config.cmdMsg.groupMsg}`)
-        if (command.admin && isGroupMsg && !isGroupAdmin)
-            return m.reply(`🟨 ${config.cmdMsg.notGroupAdmin}`)
-        if (command.botAdmin && isGroupMsg && !isBotGroupAdmin)
-            return m.reply(`🟨 ${config.cmdMsg.botNotAdmin}`)
-        if (command.owner && !isOwner)
-            return m.reply(`🟨 ${config.cmdMsg.owner}`)
 
         try {
             await command.execute(m, client, { body, prefix, args, arg, cmd, url, flags, isBotGroupAdmin, isGroupAdmin, groupAdmins, groupMembers, formattedTitle })

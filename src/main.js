@@ -52,7 +52,6 @@ const pathContacts = `./src/database/${process.env.SESSION_NAME}/contacts.json`;
 const pathMetadata = `./src/database/${process.env.SESSION_NAME}/groupMetadata.json`;
 const pathSession = `./src/database/${process.env.SESSION_NAME}`
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-import { gempaEvent, startMonitoring } from './lib/scrape/gempa2.js';
 
 const startBot = async () => {
     await openDB()
