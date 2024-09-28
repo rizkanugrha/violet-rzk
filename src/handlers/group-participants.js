@@ -2,14 +2,14 @@
  * Author  : Rizka Nugraha
  * Name    : violet-rzk
  * Version : 2.8.24
- * Update  : 2 Agustus 2024
+ * Update  : 28 September 2024
  * 
  * If you are a reliable programmer or the best developer, please don't change anything.
  * If you want to be appreciated by others, then don't change anything in this script.
  * Please respect me for making this tool from the beginning.
  */
 
-import { jidDecode } from "@whiskeysockets/baileys";
+import { jidDecode, jidNormalizedUser } from "@whiskeysockets/baileys";
 import { groupManage } from "../database/database.js";
 
 export async function GroupParticipants(anu, client) {
@@ -19,7 +19,7 @@ export async function GroupParticipants(anu, client) {
         const botNumber = client.user.id
         let jid = anu.id;
         // console.log(jid);
-        let meta = await client.groupMetadata(jid)
+        let meta = await store.groupMetadata[jid];
         let participants = anu.participants
         const group = await groupManage.get(jid);
 
@@ -40,6 +40,7 @@ export async function GroupParticipants(anu, client) {
                     let textRemove = leaveStatus.msg.replace('@user', `@${jidDecode(x).user}`).replace('{title}', meta.subject)
 
                     if (anu.action == 'add' || anu.action == 'revoked_membership_requests' && welcomeStatus.status) {
+                        meta.participants.push(...participants.map(id => ({ id: jidNormalizedUser(id), admin: null })));
 
                         client.sendMessage(jid, {
                             text: textAdd,
@@ -51,6 +52,8 @@ export async function GroupParticipants(anu, client) {
                             client.sendMessage(jid, { text: textAdd, mentions: [x] })
                         }
                     } else if (anu.action == 'remove' && leaveStatus.status) {
+                        meta.participants = meta.participants.filter(p => !participants.includes(jidNormalizedUser(p.id)));
+
                         client.sendMessage(jid, {
                             text: textRemove,
                             contextInfo: { mentionedJid: [x] }// sek ng db urung tk kei {foto}
@@ -62,18 +65,38 @@ export async function GroupParticipants(anu, client) {
                         }
                     }
                 }
-                if (anu.action == 'promote') {
-                    //  client.sendMessage(jid, { mentions: [x], caption:  })
-                    client.sendMessage(jid, {
-                        text: `Selamat @${x.split('@')[0]} atas jabatan menjadi admin di *${meta.subject}*`,
-                        mentions: [x]
-                    })
-                } else if (anu.action == 'demote') {
-                    client.sendMessage(jid, {
-                        text: `kamu @${x.split('@')[0]} telah di demote dari admin di *${meta.subject}*`,
-                        mentions: [x]
-                    })
+                switch (anu.action) {
+                    case 'promote':
+                    case 'demote':
+                        {
+                            for (const participant of meta.participants) {
+                                let id = jidNormalizedUser(participant.id); // Normalize the participant ID
+                                // Check if the participant is in the participants list
+                                if (participants.includes(id)) {
+                                    // Set admin status based on the action
+                                    participant.admin = anu.action === 'promote' ? 'admin' : null;
+
+                                    // Handle the promotion message
+                                    if (participant.admin === 'admin') {
+                                        client.sendMessage(jid, {
+                                            text: `Selamat @${participant.id.split('@')[0]} atas jabatan menjadi admin di *${meta.subject}*`,
+                                            mentions: [participant.id] // Mention the promoted user
+                                        });
+                                    }
+
+                                    // Handle the demotion message
+                                    if (participant.admin === null) {
+                                        client.sendMessage(jid, {
+                                            text: `Kamu @${participant.id.split('@')[0]} telah di demote dari admin di *${meta.subject}*`,
+                                            mentions: [participant.id] // Mention the demoted user
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        break;
                 }
+
             }
         }
     } catch (error) {

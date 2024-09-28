@@ -5,6 +5,7 @@
  * Version : 2.8.24
  * Update  : 2 Agustus 2024
  * 
+ * 
  * If you are a reliable programmer or the best developer, please don't change anything.
  * If you want to be appreciated by others, then don't change anything in this script.
  * Please respect me for making this tool from the beginning.
@@ -49,7 +50,9 @@ if (process.env.WRITE_STORE === 'true') store.readFromFile(`./src/database/${pro
 // check available file
 const pathContacts = `./src/database/${process.env.SESSION_NAME}/contacts.json`;
 const pathMetadata = `./src/database/${process.env.SESSION_NAME}/groupMetadata.json`;
+const pathSession = `./src/database/${process.env.SESSION_NAME}`
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+import { gempaEvent, startMonitoring } from './lib/scrape/gempa2.js';
 
 const startBot = async () => {
     await openDB()
@@ -159,7 +162,7 @@ const startBot = async () => {
                 case DisconnectReason.loggedOut:
                     console.error("Device has Logged Out, please rescan again...")
                     client.end()
-                    fs.rmSync(`./session`, {
+                    fs.rmSync(pathSession, {
                         recursive: true,
                         force: true
                     })
@@ -170,7 +173,7 @@ const startBot = async () => {
                 case DisconnectReason.multideviceMismatch:
                     console.error("Need Multi Device Version, please update and rescan again...")
                     client.end()
-                    fs.rmSync(`./session`, {
+                    fs.rmSync(pathSession, {
                         recursive: true,
                         force: true
                     })
@@ -195,7 +198,6 @@ const startBot = async () => {
         }
     });
 
-   
 
     // write session kang
     client.ev.on('creds.update', saveCreds);

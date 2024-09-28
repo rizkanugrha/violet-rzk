@@ -20,7 +20,7 @@ export default {
     execute: async (m, client, { prefix, args, cmd, url, flags }) => {
         if (!args.length >= 1) return
         const tulisan = args[0]
-        let ran = './src/temp/gambar/' + getRandom('.jpg');
+        let ran = './src/assets/temp/gambar/' + getRandom('.jpg');
 
         await m.react('🕒')
 
@@ -30,7 +30,7 @@ export default {
         spawn('convert', [
             //'./media/images/mentah.jpg',
             '-font',
-            './src/font/frzquadb.ttf',
+            './src/assets/font/frzquadb.ttf',
             '-size',
             '2000x2000',
             'xc:black',
@@ -39,7 +39,7 @@ export default {
             '-gravity',
             'center',
             '-tile',
-            './src/font/tiles3.png',
+            './src/assets/font/tiles3.png',
             '-annotate',
             '+5+16',
             fixHeight,
@@ -59,14 +59,13 @@ export default {
         ])
             .on('error', () => m.reply('Error convert'))
             .on('exit', () => {
-                let temp = './src/temp/gambar/'
                 let fileOutputPath = join(ran)
                 readFile(fileOutputPath, { encoding: 'base64' }, async (err, base64) => {
                     if (err) return m.reply('There was an error when reading the .jpg file') && console.log(err)
                     try {
 
                         // await client.sendRawWebpAsSticker(from, base64, true)
-                        await client.sendMessage(m.chat, { image: { url: fileOutputPath } }, { quoted: m })
+                        await client.sendMessage(m.from, { image: { url: fileOutputPath } }, { quoted: m })
                         // unlink(fileOutputPath, { encoding: 'base64' })
                         await m.react('✅')
 
